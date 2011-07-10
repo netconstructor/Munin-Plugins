@@ -83,7 +83,7 @@ function d()
 	} else {
 		$PDO_HOST = $_SERVER['pdo_host'];
 		$PDO_USER = $_SERVER['pdo_user'];
-		$PDO_PASS = $_SERVER['pdo_pass'];
+		$PDO_PASS = @$_SERVER['pdo_pass'];
 	}
 
 	$PDO_DSN = 'mysql:dbname=information_schema;host=' . $PDO_HOST;
