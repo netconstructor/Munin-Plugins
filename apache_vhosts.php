@@ -8,8 +8,12 @@
  * CustomLog /web/logs/munin/example.com "."
  */
 
-$basedir = '/web/logs/munin';
+if(!array_key_exists('basedir', $_SERVER)) {
+	echo "Add configuration for basedir:\n\t[apache_vhosts]\n\tenv.basedir /web/logs/munin\n";
+	die(2);
+}
 
+$basedir = $_SERVER['basedir'];
 $files = scandir($basedir);
 
 // arg1 is blank or 'config' when munin runs it
