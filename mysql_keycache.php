@@ -4,13 +4,13 @@
  * README
  * 
  * Link this file as mysql_keycache_ratae and mysql_keycache in the plugins folder.
- * Define your database settings in the PDO variables.
+ * Define your database settings in the munin plugin conf file
+ * 
+ * [mysql_keycache]
+ * env.pdo_host localhost
+ * env.pdo_user munin
+ * env.pdo_pass munin
  */
-
-define('PDO_DSN', 'mysql:dbname=information_schema;host=localhost');
-define('PDO_USER', 'munin');
-define('PDO_PASS', 'munin');
-
 
 // config or blank
 $mode = array_key_exists(1, $argv) ? $argv[1] : '';
@@ -76,10 +76,22 @@ else
 
 function d()
 {
+	if(!array_key_exists('pdo_host', $_SERVER)) {
+		$PDO_HOST = 'localhost';
+		$PDO_USER = 'munin';
+		$PDO_PASS = 'munin';
+	} else {
+		$PDO_HOST = $_SERVER['pdo_host'];
+		$PDO_USER = $_SERVER['pdo_user'];
+		$PDO_PASS = $_SERVER['pdo_pass'];
+	}
+
+	$PDO_DSN = 'mysql:dbname=information_schema;host=' . $PDO_HOST;
+
 	static $DB;
 	if(!isset($DB))
-		$DB = new PDO(PDO_DSN, PDO_USER, PDO_PASS);
+		$DB = new PDO($PDO_DSN, $PDO_USER, $PDO_PASS);
+
 	return $DB;
 }
 
-?>
